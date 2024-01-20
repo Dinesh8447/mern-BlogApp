@@ -1,12 +1,21 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-// const dotenv = require('dotenv')
-
 dotenv.config();
 
 
 const app = express()
+
+
+
+
+
+
+
+
+
+
+
 
 
 mongoose.connect(process.env.MONGODB)
