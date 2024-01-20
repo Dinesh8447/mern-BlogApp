@@ -3,16 +3,19 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import userrouter from './routes/user.route.js'
 import authrouter from './routes/auth.route.js'
-
-
+import cors from 'cors'
+import bodyParser from 'body-parser'
 dotenv.config();
 
 
 const app = express()
+app.use(bodyParser.json())
+// app.use(express.json())
+app.use(cors({
+    origin:['http://localhost:5173'],
+    credentials:true
+}))
 
-
-
-app.use(express.json())
 
 app.use('/api/user',userrouter)
 app.use('/api/auth',authrouter)

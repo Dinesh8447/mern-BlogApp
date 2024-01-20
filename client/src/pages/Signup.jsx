@@ -1,8 +1,41 @@
 import { Button, Label, TextInput } from 'flowbite-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+
 
 export default function Signup() {
+const [formdata,setformdata] = useState({})
+
+
+const handlechange = (e) =>{
+  setformdata({
+  ...formdata,
+  [e.target.id]:e.target.value
+  })
+}
+
+// console.log(formdata)
+
+const handlesubmit = async(e) =>{
+  e.preventDefault()
+  try {
+   await axios.post('/auth/signup',formdata)
+   .then(({data})=>{
+    console.log(data)
+   })
+    .catch(e=>{
+      console.log(e)
+    })
+  } catch (error) {
+    console.log(data)    
+  }
+
+}
+
+
+
+
   return (
     <div className='min-h-screen mt-20'>
       <div className='flex p-3 max-w-3xl mx-auto gap-5 flex-col md:flex-row md:items-center'>
@@ -17,7 +50,7 @@ export default function Signup() {
 
         {/* right side */}
         <div className='flex-1'>
-          <form className='flex flex-col gap-4'>
+          <form onSubmit={handlesubmit} className='flex flex-col gap-4'>
             {/* username */}
             <div>
               <Label  value='Username' />
@@ -25,6 +58,7 @@ export default function Signup() {
                 type='text'
                 placeholder='Username'
                 id='username'
+                onChange={handlechange}
               />
             </div>
 
@@ -32,9 +66,10 @@ export default function Signup() {
             <div>
               <Label value='Email' />
               <TextInput
-                type='text'
+                type='email'
                 placeholder='name@gmail.com'
                 id='email'
+                onChange={handlechange}
               />
             </div>
 
@@ -42,9 +77,10 @@ export default function Signup() {
             <div>
               <Label value='Password' />
               <TextInput
-                type='text'
+                type='password'
                 placeholder='Password'
                 id='password'
+                onChange={handlechange}
               />
             </div>
 
