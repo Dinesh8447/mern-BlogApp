@@ -1,13 +1,16 @@
-import { Button, Navbar, TextInput } from 'flowbite-react'
+import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaMoon } from 'react-icons/fa'
-// import Footer from './Footer'
 import Footers from './Footer'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 export default function Header() {
   const path = useLocation().pathname
+  const { currentuser } = useSelector(state => state.user)
+
+  // console.log(currentuser)
   return (
     <div>
 
@@ -16,9 +19,9 @@ export default function Header() {
           <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>Mern</span>Blog
         </Link>
 
-        {/* form */}
+        {/* form */}  
         <form action="">
-          <TextInput
+          <TextInput  
             type='text'
             placeholder='Search...'
             rightIcon={AiOutlineSearch}
@@ -35,11 +38,44 @@ export default function Header() {
             <FaMoon />
           </Button>
 
-          <Link to={'/signin'}>
-            <Button gradientDuoTone='purpleToBlue' outline>
-              Sign In
-            </Button>
-          </Link>
+          {currentuser ?
+            (
+              <Dropdown
+              arrowIcon={false}
+              inline
+              label={
+                <Avatar
+                alt='img'
+                img={currentuser.profilepicture}
+                rounded
+                />
+              }
+              >
+                  <Dropdown.Header>
+                    <span className='block text-sm '>@{currentuser.username}</span>
+                    <span className='block text-sm font-medium truncate'>@{currentuser.email}</span>
+                  </Dropdown.Header>
+                  <Link to={'/dashboard?tab=profile'}>
+                    <Dropdown.Item>
+                      Profile
+                    </Dropdown.Item>
+                  </Link>
+                  <Dropdown.Divider/>
+                    <Dropdown.Item>
+                      Sign out
+                    </Dropdown.Item>
+              </Dropdown>
+            )
+            : (
+              <Link to={'/signin'}>
+                <Button gradientDuoTone='purpleToBlue' outline>
+                  Sign In
+                </Button>
+              </Link>
+            )}
+
+
+
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
@@ -67,7 +103,7 @@ export default function Header() {
       </Navbar>
 
       <Outlet />
-      <Footers/>
+      <Footers />
     </div>
   )
 }
