@@ -2,6 +2,8 @@ import { Button, Navbar, TextInput } from 'flowbite-react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaMoon } from 'react-icons/fa'
+// import Footer from './Footer'
+import Footers from './Footer'
 
 
 export default function Header() {
@@ -19,8 +21,7 @@ export default function Header() {
           <TextInput
             type='text'
             placeholder='Search...'
-            // rightIcon={<AiOutlineSearch/>}
-            // icon={<AiOutlineSearch/>}
+            rightIcon={AiOutlineSearch}
             className='hidden lg:inline'
           />
         </form>
@@ -65,11 +66,8 @@ export default function Header() {
 
       </Navbar>
 
-
-
-
-
       <Outlet />
+      <Footers/>
     </div>
   )
 }

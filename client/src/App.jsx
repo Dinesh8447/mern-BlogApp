@@ -8,6 +8,7 @@ import Signin from './pages/Signin'
 import Signup from './pages/Signup'
 import Header from './compoents/Header'
 import axios from 'axios'
+import Footer from './compoents/Footer'
 
 axios.defaults.baseURL='http://localhost:4000/api'
 axios.defaults.withCredentials=true
@@ -15,9 +16,7 @@ axios.defaults.withCredentials=true
 function App() {  
   return (
    <Routes>
-    <Route path='/' element={<Header/>}>
-
-    
+    <Route path='/' element={<Header/>}>    
     <Route path='/home' element={<Home/>}/>
     <Route path='/dashboard' element={<Dashboard/>}/>
     <Route path='/about' element={<About/>}/>
