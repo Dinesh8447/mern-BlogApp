@@ -5,10 +5,13 @@ import userrouter from './routes/user.route.js'
 import authrouter from './routes/auth.route.js'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+const app = express()
+
+
 dotenv.config();
 
-
-const app = express()
+app.use(cookieParser())
 app.use(bodyParser.json())
 // app.use(express.json())
 app.use(cors({
