@@ -5,6 +5,7 @@ import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { signinfailure,signinstart,signinsuccess } from '../../redux/user/userSlice'
 import { useDispatch,useSelector } from 'react-redux'
+import Oauth from '../compoents/Oauth'
 
 export default function Signin() {
   const [formdata,setformdata] = useState({})
@@ -98,7 +99,7 @@ export default function Signin() {
                 :"Sign In"
               }
             </Button>
-  
+  <Oauth/>
   
   
             </form>

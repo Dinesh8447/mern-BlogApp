@@ -17,14 +17,12 @@ export default function Dashsidebar() {
     },[location.search])
 
 
-
-
     return (
         <Sidebar className='w-full md:w-56 font-semibold'>
             <Sidebar.Items>
                 <Sidebar.ItemGroup>
                     <Link to={'/dashboard?tab=profile'}>
-                    <Sidebar.Item className="font-semibold" active={tab === 'profile'} icon={HiUser} label='User' labelColor="dark">
+                    <Sidebar.Item className="font-semibold" active={tab === 'profile'} icon={HiUser} label='User' as='div' labelColor="dark">
                         Profile
                     </Sidebar.Item>
                     </Link>

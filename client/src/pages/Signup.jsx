@@ -2,6 +2,7 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Oauth from '../compoents/Oauth'
 
 
 export default function Signup() {
@@ -109,7 +110,7 @@ const handlesubmit = async(e) =>{
             }
           </Button>
 
-
+<Oauth/>
 
           </form>
 
