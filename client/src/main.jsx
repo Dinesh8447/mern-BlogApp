@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { store, persistor } from '../redux/store.js'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import ThemProvider from './compoents/ThemProvider.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -13,7 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <PersistGate persistor={persistor}>
         <Provider store={store}>
-          <App />
+          <ThemProvider>
+            <App />
+          </ThemProvider>
         </Provider>
       </PersistGate>
     </BrowserRouter>

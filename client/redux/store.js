@@ -3,11 +3,13 @@ import { persistReducer } from 'redux-persist'
 import userSlice from './user/userSlice'
 import storage from 'redux-persist/lib/storage'
 import persistStore from 'redux-persist/es/persistStore'
+import themeslice from './theme/themeslice'
 
 // persist is used for store the use data in local storage, even through refresh the web browser,this why we use persist
 
 const rootreducer = combineReducers({
     user:userSlice,
+    theme:themeslice,
 })
 
 const persistconfig = {
