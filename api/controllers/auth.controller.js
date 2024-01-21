@@ -27,7 +27,7 @@ export const signin = async (req, res, next) => {
     try {
         const validuser = await usermodel.findOne({ email })
         if (!validuser) {
-          return next(errorhandler(404, "user not fount"))
+          return next(errorhandler(404, "user not found"))
         }
         const validpassword = bycrypt.compareSync(password, validuser.password)
         if (!validpassword) {
