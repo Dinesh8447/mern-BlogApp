@@ -9,6 +9,7 @@ import Signup from './pages/Signup'
 import Header from './compoents/Header'
 import axios from 'axios'
 import Footer from './compoents/Footer'
+import PrivateRoute from './compoents/PrivateRoute'
 
 axios.defaults.baseURL='http://localhost:4000/api'
 axios.defaults.withCredentials=true
@@ -18,11 +19,13 @@ function App() {
    <Routes>
     <Route path='/' element={<Header/>}>    
     <Route path='/home' element={<Home/>}/>
-    <Route path='/dashboard' element={<Dashboard/>}/>
     <Route path='/about' element={<About/>}/>
     <Route path='/projects' element={<Projects/>}/>
     <Route path='/signin' element={<Signin/>}/>
     <Route path='/signup' element={<Signup/>}/>
+    <Route element={<PrivateRoute/>}>
+    <Route path='/dashboard' element={<Dashboard/>}/>
+    </Route>
     </Route>
    </Routes>
   )
