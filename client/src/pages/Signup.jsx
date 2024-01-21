@@ -1,17 +1,19 @@
-import { Button, Label, TextInput } from 'flowbite-react'
+import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 
 export default function Signup() {
 const [formdata,setformdata] = useState({})
-
+const [error,seterror] = useState(null)
+const [loading,setloading] = useState(false)
+const navigate = useNavigate()
 
 const handlechange = (e) =>{
   setformdata({
   ...formdata,
-  [e.target.id]:e.target.value
+  [e.target.id]:e.target.value.trim()
   })
 }
 
@@ -19,16 +21,24 @@ const handlechange = (e) =>{
 
 const handlesubmit = async(e) =>{
   e.preventDefault()
+  if(!formdata.username || !formdata.email || !formdata.password){
+    return seterror('please fill out all fields')
+  }
   try {
+    setloading(true)
+    seterror(null)
    await axios.post('/auth/signup',formdata)
    .then(({data})=>{
-    console.log(data)
+    setloading(false)
+    navigate('/signin')
+    // console.log(data)
    })
     .catch(e=>{
       console.log(e)
     })
   } catch (error) {
-    console.log(data)    
+    // client side error eg: internet connection
+    seterror(error.message)    
   }
 
 }
@@ -86,8 +96,17 @@ const handlesubmit = async(e) =>{
 
 
 
-          <Button gradientDuoTone='purpleToPink' type='submit'>
-            Signup
+
+          <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>
+            {
+              loading ? (
+                <>
+              <Spinner size='sm'/>
+              <span className='pl-3'>Loading...</span> 
+              </>
+              )
+              :"Sign Up"
+            }
           </Button>
 
 
@@ -100,6 +119,13 @@ const handlesubmit = async(e) =>{
             Signin
             </Link>
           </div>
+          {
+            error && (
+              <Alert className='mt-5' color='failure'>
+                {error}
+              </Alert>
+            )
+          }
         </div>
       </div>
 
