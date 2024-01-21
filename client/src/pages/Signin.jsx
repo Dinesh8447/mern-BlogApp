@@ -3,13 +3,14 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { signinfailure,signinstart,signinsuccess } from '../../redux/user/userSlice'
+import { useDispatch,useSelector } from 'react-redux'
 
 export default function Signin() {
-
   const [formdata,setformdata] = useState({})
-  const [error,seterror] = useState(null)
-  const [loading,setloading] = useState(false)
+  const {error,loading} = useSelector(state=>state.user)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   
   const handlechange = (e) =>{
     setformdata({
@@ -18,30 +19,27 @@ export default function Signin() {
     })
   }
   
-  // console.log(formdata)
   
   const handlesubmit = async(e) =>{
     e.preventDefault()
     if(!formdata.email || !formdata.password){
-      return seterror('please fill out all fields')
+      return dispatch(signinfailure('please fill out all fields'))
     }
     try {
-      setloading(true)
-      seterror(null)
+      dispatch(signinstart())
      await axios.post('/auth/signin',formdata)
      .then(({data})=>{
-      setloading(false)
+      dispatch(signinsuccess(data))
       navigate('/')
-      // console.log(data)
      })
       .catch(e=>{
-        setloading(false)
-      seterror(e.response.data.message)    
-        console.log()
+        if(e.response.data.success === false){
+          dispatch(signinfailure(e.response.data.message))
+        }
       })
     } catch (error) {
       // client side error eg: internet connection
-      seterror(error.message)    
+      dispatch(signinfailure(error.message))
     }
   
   }
