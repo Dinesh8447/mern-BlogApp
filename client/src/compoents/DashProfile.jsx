@@ -1,15 +1,17 @@
-import { Alert, Button, TextInput } from 'flowbite-react'
+import { Alert, Button, Modal, TextInput } from 'flowbite-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { HiOutlineExclamationCircle } from 'react-icons/hi'
 import { app } from '../firebase'
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updatefailuer,updatesuccess,updatestart } from '../../redux/user/userSlice'
+import { updatefailuer,updatesuccess,updatestart, deleteuserfailuer, deleteuserstart, deleteusersuccess } from '../../redux/user/userSlice'
 import axios from 'axios'
 
+
 export default function DashProfile() {
-  const { currentuser } = useSelector(state => state.user)
+  const { currentuser,error } = useSelector(state => state.user)
   const [imagefile, setimagefile] = useState(null)
   const [imagefileurl, setimagefileurl] = useState(null)
   const [imagefileuploadprocess, setimagefileuploadprocess] = useState(null)
@@ -17,6 +19,7 @@ export default function DashProfile() {
   const [imagefileuploading, setimagefileuploading] = useState(false)
   const [updateusersuccess, setupdateusersuccess] = useState(null)
   const [UpdateError, setUpdateError] = useState(null)
+  const [showmodel, setshowmodel] = useState(false)
 
   const [formdate, setformdate] = useState({})
   const dispatch = useDispatch()
@@ -39,6 +42,23 @@ export default function DashProfile() {
       [e.target.id] : e.target.value
     })
   }
+
+  const handledeleteuser = async() =>{
+      setshowmodel(false)
+      try {
+        dispatch(deleteuserstart)
+        axios.delete(`/user/delete/${currentuser._id}`)
+        .then(({data})=>{
+          dispatch(deleteusersuccess(data))
+        })
+        .catch(e=>{
+          dispatch(deleteuserfailuer(e.response.data.message))
+        })
+      } catch (e) {
+        dispatch(deleteuserfailuer(e.response.data.message))
+      }
+  }
+
 
   const handlesubmit = async(e) =>{
     e.preventDefault()
@@ -63,7 +83,7 @@ export default function DashProfile() {
         setupdateusersuccess(null)
         setUpdateError(e.response.data.message)
       })
-    } catch (error) {
+    } catch (e) {
       dispatch(updatefailuer(e.response.data.message))
       setupdateusersuccess(null)
       setUpdateError(e.response.data.message)
@@ -164,7 +184,7 @@ export default function DashProfile() {
         </Button>
       </form>
       <div className='text-red-500 flex justify-between mt-5 items-center'>
-        <span className='cursor-pointer'>Delete Account</span>
+        <span onClick={()=>setshowmodel(true)} className='cursor-pointer'>Delete Account</span>
         <span className='cursor-pointer'>Sign Out</span>
       </div>
       {updateusersuccess && (
@@ -173,11 +193,37 @@ export default function DashProfile() {
         </Alert>
       )}
 
+{error && (
+        <Alert color='success' className='mt-5'>
+            {error}
+        </Alert>
+      )}
+
+
 {UpdateError && (
         <Alert color='failure' className='mt-5'>
             {UpdateError}
         </Alert>
       )}
+
+      <Modal show={showmodel} size='md' onClose={()=>setshowmodel(false)} popup>
+            <Modal.Header/>
+            <Modal.Body>
+              <div className="text-center">
+              <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto '/>
+              <h1 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>Are you sure you want to delete your account</h1>
+              <div className='flex gap-3 justify-center'>
+                <Button color='failure' onClick={handledeleteuser}>
+                    Yes i'm sure
+                </Button>
+                <Button color='gray' onClick={()=>setshowmodel(false)}>
+                    No
+                </Button>
+              </div>
+              </div>
+            </Modal.Body>
+
+      </Modal>
     </div>
   )
 }
