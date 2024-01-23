@@ -5,6 +5,7 @@ import usermodel from '../models/user.model.js'
 export const updateuser = async (req, res, next) => {
 
   // res.json(req.user) //this id  (req.user) come from cookie
+
   if (req.user.id !== req.params.userid) {
     return next(errorhandler(403, 'you are not allowed to update this user'))
   }
@@ -22,8 +23,7 @@ export const updateuser = async (req, res, next) => {
     if(req.body.username.length < 6 || req.body.username.length > 20 ){
       return next(errorhandler(400, 'username must be between 6 to 20 characters'))    
     }
-  }
-
+  
   if(req.body.username.includes(' ')){
     return next(errorhandler(400, 'Username cannot contain spaces '))
   }
@@ -35,7 +35,7 @@ export const updateuser = async (req, res, next) => {
   if(!req.body.username.match(/^[a-zA-Z0-9]+$/)){
     return next(errorhandler(400, 'Username can only contain numbers and letters'))
   }
-
+}
   try {
     const userupdate = await usermodel.findByIdAndUpdate(req.params.userid,{
       $set:{
