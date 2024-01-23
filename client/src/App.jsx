@@ -10,6 +10,8 @@ import Header from './compoents/Header'
 import axios from 'axios'
 import Footer from './compoents/Footer'
 import PrivateRoute from './compoents/PrivateRoute'
+import CreatePost from './pages/CreatePost'
+import AdminPrivateRoute from './compoents/AdminPrivateRoute'
 
 axios.defaults.baseURL='http://localhost:4000/api'
 axios.defaults.withCredentials=true
@@ -23,8 +25,13 @@ function App() {
     <Route path='/projects' element={<Projects/>}/>
     <Route path='/signin' element={<Signin/>}/>
     <Route path='/signup' element={<Signup/>}/>
+    
     <Route element={<PrivateRoute/>}>
     <Route path='/dashboard' element={<Dashboard/>}/>
+    </Route>
+
+    <Route element={<AdminPrivateRoute/>}>
+    <Route path='/Createpost' element={<CreatePost/>}/>
     </Route>
     </Route>
    </Routes>

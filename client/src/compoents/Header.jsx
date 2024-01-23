@@ -65,6 +65,9 @@ export default function Header() {
                     alt='img'
                     img={currentuser.photourl}
                     rounded
+                    status="online"
+                    // statusPosition="bottom-right"
+                    statusPosition="top-right" 
                   />
                 }
               >

@@ -8,10 +8,11 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { updatefailuer,updatesuccess,updatestart, deleteuserfailuer, deleteuserstart, deleteusersuccess, signoutsuccess } from '../../redux/user/userSlice'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 
 export default function DashProfile() {
-  const { currentuser,error } = useSelector(state => state.user)
+  const { currentuser,error,loading } = useSelector(state => state.user)
   const [imagefile, setimagefile] = useState(null)
   const [imagefileurl, setimagefileurl] = useState(null)
   const [imagefileuploadprocess, setimagefileuploadprocess] = useState(null)
@@ -191,9 +192,17 @@ export default function DashProfile() {
         <TextInput type='text' id="username" placeholder='Username' onChange={handlechange} defaultValue={currentuser.username} />
         <TextInput type='email' id="email" placeholder='Email' onChange={handlechange} defaultValue={currentuser.email} />
         <TextInput type='password' id="password" onChange={handlechange} placeholder='******' />
-        <Button type='submit' className='font-bold' gradientDuoTone='purpleToBlue' outline>
-          Update
+        <Button type='submit' className='font-bold' gradientDuoTone='purpleToBlue' outline disabled={loading || imagefileuploading}>
+          {loading ? "Loading" : "Update"}
         </Button>
+        {currentuser.isadmin && (
+          <Link to={'/Createpost'}>
+          
+          <Button type='button' gradientDuoTone='purpleToBlue' className='w-full' >
+              Create Post
+          </Button>
+          </Link>
+        )}
       </form>
       <div className='text-red-500 flex justify-between mt-5 items-center'>
         <span onClick={()=>setshowmodel(true)} className='cursor-pointer'>Delete Account</span>
