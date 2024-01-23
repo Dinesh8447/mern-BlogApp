@@ -7,6 +7,10 @@ const userschema = new mongoose.Schema({
     photourl:{
         type:String,
         default:"https://qph.cf2.quoracdn.net/main-qimg-ba9341fd5e99e413f706915513491700-lq"
+    },
+    isadmin:{
+        type:Boolean,
+        default:false
     }
 
 },{timeseries:true})

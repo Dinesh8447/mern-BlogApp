@@ -33,7 +33,7 @@ export const signin = async (req, res, next) => {
             // return the next(errorhandler) otherwise it affects the server 
             return next(errorhandler(404, "invalid password"))
         }
-        const token = jwt.sign({ id: validuser._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+        const token = jwt.sign({ id: validuser._id,isadmin:validuser.isadmin }, process.env.JWT_SECRET, { expiresIn: '1d' })
         // if not declear expiresin, it works until web browres open
         const { password: pass, ...rest } = validuser._doc //this boc not show the password when response data 
         res.status(200).cookie('accesstoken', token, { httpOnly: true }).json(rest)
@@ -51,7 +51,7 @@ export const google = async (req, res, next) => {
         const user = await usermodel.findOne({ email: req.body.email })
 
         if (user) {
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+            const token = jwt.sign({ id: user._id ,isadmin:user.isadmin}, process.env.JWT_SECRET)
             const { password: pass, ...rest } = user._doc //this boc not show the password when response data 
             res.status(200).cookie('accesstoken', token, { httpOnly: true }).json(rest)
 
@@ -65,7 +65,7 @@ export const google = async (req, res, next) => {
                 photourl: photourl
             })
             await newuser.save()
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+            const token = jwt.sign({ id: user._id,isadmin:user.isadmin }, process.env.JWT_SECRET)
             const { password: pass, ...rest } = validuser._doc
             res.status(200).cookie('accesstoken', token, { httpOnly: true }).json(rest)
 
