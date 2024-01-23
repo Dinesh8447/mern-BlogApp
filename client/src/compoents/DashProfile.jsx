@@ -6,7 +6,7 @@ import { app } from '../firebase'
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updatefailuer,updatesuccess,updatestart, deleteuserfailuer, deleteuserstart, deleteusersuccess } from '../../redux/user/userSlice'
+import { updatefailuer,updatesuccess,updatestart, deleteuserfailuer, deleteuserstart, deleteusersuccess, signoutsuccess } from '../../redux/user/userSlice'
 import axios from 'axios'
 
 
@@ -89,6 +89,18 @@ export default function DashProfile() {
       setUpdateError(e.response.data.message)
     }
 
+  }
+
+  const handlesignout = () =>{
+    try {
+      axios.post('/user/signout')
+      .then(()=>{
+        dispatch(signoutsuccess())
+        console.log('sign out')
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
@@ -185,7 +197,7 @@ export default function DashProfile() {
       </form>
       <div className='text-red-500 flex justify-between mt-5 items-center'>
         <span onClick={()=>setshowmodel(true)} className='cursor-pointer'>Delete Account</span>
-        <span className='cursor-pointer'>Sign Out</span>
+        <span  onClick={handlesignout} className='cursor-pointer'>Sign Out</span>
       </div>
       {updateusersuccess && (
         <Alert color='success' className='mt-5'>
@@ -198,7 +210,6 @@ export default function DashProfile() {
             {error}
         </Alert>
       )}
-
 
 {UpdateError && (
         <Alert color='failure' className='mt-5'>

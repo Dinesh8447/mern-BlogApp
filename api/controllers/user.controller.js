@@ -63,8 +63,16 @@ export const deleteuser = async(req,res,next) =>{
   }
 
   try {
-    const userupdate = await usermodel.findByIdAndDelete(req.params.userid)
+    await usermodel.findByIdAndDelete(req.params.userid)
     res.status(200).json('user has been deleted')
+  } catch (error) {
+    next(error)   
+  }
+}
+
+export const signout = async(req,res,next) =>{
+  try {
+    res.clearCookie('accesstoken').status(200).json('sign out')
   } catch (error) {
     next(error)   
   }

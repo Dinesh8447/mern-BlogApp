@@ -5,6 +5,8 @@ import { FaMoon, FaSun } from 'react-icons/fa'
 import Footers from './Footer'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggletheme } from '../../redux/theme/themeslice'
+import axios from 'axios'
+import { signoutsuccess } from '../../redux/user/userSlice'
 
 
 export default function Header() {
@@ -13,6 +15,18 @@ export default function Header() {
   const { theme } = useSelector(state => state.theme)
   const dispatch = useDispatch()
   // console.log(currentuser)
+
+  const handlesignout = () =>{
+    try {
+      axios.post('/user/signout')
+      .then(()=>{
+        dispatch(signoutsuccess())
+        console.log('sign out')
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div>
       <Navbar className='border-b-2'>
@@ -64,7 +78,7 @@ export default function Header() {
                   </Dropdown.Item>
                 </Link>
                 <Dropdown.Divider />
-                <Dropdown.Item>
+                <Dropdown.Item onClick={handlesignout}>
                   Sign out
                 </Dropdown.Item>
               </Dropdown>

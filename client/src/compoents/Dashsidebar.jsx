@@ -2,10 +2,14 @@ import { Sidebar } from 'flowbite-react'
 import { HiArrowSmRight, HiUser } from 'react-icons/hi'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import axios from 'axios'
+import { signoutsuccess } from '../../redux/user/userSlice'
+import { useDispatch } from 'react-redux'
 
 export default function Dashsidebar() {
     const location = useLocation()
     const [tab,settab] = useState('')
+    const dispatch = useDispatch()
     
     useEffect(()=>{
       const urlparams = new URLSearchParams(location.search)
@@ -16,6 +20,17 @@ export default function Dashsidebar() {
       }
     },[location.search])
 
+    const handlesignout = () =>{
+        try {
+          axios.post('/user/signout')
+          .then(()=>{
+            dispatch(signoutsuccess())
+            console.log('sign out')
+          })
+        } catch (error) {
+          console.log(error)
+        }
+      }
 
     return (
         <Sidebar className='w-full md:w-56 font-semibold'>
@@ -27,7 +42,7 @@ export default function Dashsidebar() {
                     </Sidebar.Item>
                     </Link>
 
-                    <Sidebar.Item className='cursor-pointer font-semibold' icon={HiArrowSmRight} >
+                    <Sidebar.Item  className='cursor-pointer font-semibold' icon={HiArrowSmRight} onClick={handlesignout} >
                         Signout
                     </Sidebar.Item>
 
