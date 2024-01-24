@@ -22,7 +22,7 @@ const postschema = new mongoose.Schema({
         unique:true,
     }
 
-},{timeseries:true})
+},{timestamps:true})
 
 const user = mongoose.model('postmodel',postschema)
 
