@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import { Table } from 'flowbite-react'
+import { Button, Table } from 'flowbite-react'
 import { Link } from 'react-router-dom'
 
 
@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 export default function DashPost() {
   const { currentuser,error,loading } = useSelector(state => state.user)
   const [userpost, setuserpost] = useState([])
+  const [showmore, setshowmore] = useState(true)
 
   console.log(userpost)
   useEffect(()=>{
@@ -18,6 +19,9 @@ export default function DashPost() {
       .then(({data})=>{
           // console.log(data)
           setuserpost(data.posts)
+          if(data.posts.length < 9){
+            setshowmore(false)
+          }
       })
       .catch(e=>{
         console.log(e)
@@ -29,6 +33,27 @@ export default function DashPost() {
     }
 
   },[currentuser._id])
+
+const handleshowmore = async() =>{
+  const startindex = userpost.length;
+  try {
+    
+   await axios.get(`/post/get?userid=${currentuser._id}&startindex=${startindex}`)
+          .then(({data})=>{
+            if(data){
+              setuserpost((prev)=>[...prev,...data.posts])
+            }
+            if(data.posts.length < 9){
+              setshowmore(false)
+            }
+          })
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
 
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 
@@ -60,6 +85,13 @@ export default function DashPost() {
             ))
           }
         </Table>
+        {
+          showmore && (
+            <button onClick={handleshowmore}  className='w-full text-blue-500 self-center font-semibold py-7  '>
+              Showmore
+            </button>
+          )
+        }
       </>
       
       ) : (<p>there is no post</p>)}
