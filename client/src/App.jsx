@@ -12,6 +12,7 @@ import Footer from './compoents/Footer'
 import PrivateRoute from './compoents/PrivateRoute'
 import CreatePost from './pages/CreatePost'
 import AdminPrivateRoute from './compoents/AdminPrivateRoute'
+import DashPost from './compoents/DashPost'
 
 axios.defaults.baseURL='http://localhost:4000/api'
 axios.defaults.withCredentials=true
