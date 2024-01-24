@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import { Button, Table } from 'flowbite-react'
+import { Button, Modal, Table } from 'flowbite-react'
 import { Link } from 'react-router-dom'
+import { HiOutlineExclamationCircle } from 'react-icons/hi'
 
 
 
@@ -10,8 +11,29 @@ export default function DashPost() {
   const { currentuser,error,loading } = useSelector(state => state.user)
   const [userpost, setuserpost] = useState([])
   const [showmore, setshowmore] = useState(true)
+  const [showmodel, setshowmodel] = useState(false)
+  const [postidtodelete, setpostidtodelete] = useState('')
 
-  console.log(userpost)
+console.log(userpost)
+  
+  const handledeletepost = async() =>{
+    setshowmodel(false)
+    try {
+      axios.delete(`/post/delete/${postidtodelete}/${currentuser._id}`)
+      .then(({data})=>{
+        setuserpost((prev)=>prev.filter((post)=>post.id !== postidtodelete))
+        console.log('delete')
+        console.log(data)
+      })
+      .catch(e=>{
+        console.log(e.response.data.message)
+      })
+    } catch (e) {
+      console.log(e)
+    }
+}
+
+  // console.log(userpost)
   useEffect(()=>{
     const fetchpost = () =>{
 
@@ -72,13 +94,13 @@ const handleshowmore = async() =>{
           </Table.Head>
           {
             userpost.map((post)=>(
-              <Table.Body className='divide-y'>
-                <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+              <Table.Body  className='divide-y'>
+                <Table.Row  className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                   <Table.Cell>{new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
                   <Table.Cell><Link to={`/post/${post.slug}`}><img src={post.image} alt={post.title} className='w-20 h-10 object-cover bg-slate-500'/></Link></Table.Cell>
                   <Table.Cell><Link className='font-semibold text-gray-500 dark:text-white' to={`/post/${post.slug}`}>{post.title}</Link></Table.Cell>
                   <Table.Cell>{post.category}</Table.Cell>
-                  <Table.Cell><span className='text-red-500 font-medium hover:underline cursor-pointer'>Delete</span></Table.Cell>
+                  <Table.Cell><span onClick={()=>{setshowmodel(true); setpostidtodelete(post._id);} }  className='text-red-500 font-medium hover:underline cursor-pointer'>Delete</span></Table.Cell>
                   <Table.Cell><Link className='text-blue-500 font-medium hover:underline cursor-pointer' to={`/update-post/${post._id}`}><span>Edit</span></Link></Table.Cell>
                 </Table.Row>
               </Table.Body>
@@ -95,6 +117,25 @@ const handleshowmore = async() =>{
       </>
       
       ) : (<p>there is no post</p>)}
+
+<Modal show={showmodel} size='md' onClose={()=>setshowmodel(false)} popup>
+            <Modal.Header/>
+            <Modal.Body>
+              <div className="text-center">
+              <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto '/>
+              <h1 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>Are you sure you want to delete this post</h1>
+              <div className='flex gap-3 justify-center'>
+                <Button color='failure' onClick={handledeletepost}>
+                    Yes i'm sure
+                </Button>
+                <Button color='gray' onClick={()=>setshowmodel(false)}>
+                    No
+                </Button>
+              </div>
+              </div>
+            </Modal.Body>
+
+      </Modal>
     </div>
   )
 }

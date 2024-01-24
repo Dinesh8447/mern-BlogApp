@@ -6,12 +6,12 @@ export const createpost = async(req,res,next)=>{
     // console.log(req.user)
 
     if(!req.user.isadmin){
-            return errorhandler(403,'you are not allow to create post')
+            return next(errorhandler(403,'you are not allow to create post'))
         }
 
 
         if(!req.body.title || !req.body.content){
-            return errorhandler(400,'please provide all required fields')
+            return next(errorhandler(400,'please provide all required fields'))
         }
 
         const slug = req.body.title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9]/g,'-')
@@ -76,3 +76,15 @@ export const getpost = async(req,res,next)=>{
 }
 
 
+export const deletepost = async(req,res,next)=>{
+        if(!req.user.isadmin || req.user.id !== req.params.userid){
+            return next(errorhandler(403,'you are not allow to create post'))
+        }
+
+        try {
+            await postmodel.findByIdAndDelete(req.params.id)
+            res.status(200).json('post has been deleted')
+        } catch (error) {
+            next(error)
+        }
+}
