@@ -47,7 +47,7 @@ export default function Dashsidebar() {
 
         <Link to='/dashboard?tab=post'>
             <Sidebar.Item className="font-semibold cursor-pointer" active={tab === 'post'} icon={HiDocumentText} as='div' >
-              Post
+              Posts
             </Sidebar.Item>
           </Link>   
           
