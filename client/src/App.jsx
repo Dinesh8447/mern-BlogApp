@@ -13,6 +13,7 @@ import PrivateRoute from './compoents/PrivateRoute'
 import CreatePost from './pages/CreatePost'
 import AdminPrivateRoute from './compoents/AdminPrivateRoute'
 import DashPost from './compoents/DashPost'
+import Updatepost from './pages/Updatepost'
 
 axios.defaults.baseURL='http://localhost:4000/api'
 axios.defaults.withCredentials=true
@@ -33,6 +34,7 @@ function App() {
 
     <Route element={<AdminPrivateRoute/>}>
     <Route path='/Createpost' element={<CreatePost/>}/>
+    <Route path='/update-post/:id' element={<Updatepost/>}/>
     </Route>
     </Route>
    </Routes>

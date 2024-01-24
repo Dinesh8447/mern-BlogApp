@@ -6,7 +6,6 @@ const postschema = new mongoose.Schema({
     title:{
         type:String,
         require:true,
-        unique:true,
     },
     image:{
         type:String,
@@ -18,8 +17,6 @@ const postschema = new mongoose.Schema({
     },
     slug:{
         type:String,
-        require:true,
-        unique:true,
     }
 
 },{timestamps:true})

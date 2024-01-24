@@ -80,11 +80,31 @@ export const deletepost = async(req,res,next)=>{
         if(!req.user.isadmin || req.user.id !== req.params.userid){
             return next(errorhandler(403,'you are not allow to create post'))
         }
-
         try {
-            await postmodel.findByIdAndDelete(req.params.id)
+            await postmodel.findByIdAndDelete(req.params.postid)
             res.status(200).json('post has been deleted')
         } catch (error) {
             next(error)
         }
+}
+
+
+export const updatepost = async(req,res,next)=>{
+    if(!req.user.isadmin || req.user.id !== req.params.userid){
+        return next(errorhandler(403,'you are not allow to create post'))
+    }
+//  console.log(req.params.id)
+    try {
+      const data = await postmodel.findByIdAndUpdate(req.params.postid,{
+            $set:{
+                title:req.body.title,
+                content:req.body.content,
+                category:req.body.category,
+                image:req.body.image
+            }
+        },{new:true})
+        res.status(200).json(data)
+    } catch (error) {
+        next(error)
+    }
 }
