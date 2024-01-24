@@ -6,12 +6,41 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 export default function CreatePost() {
   const [imagefile, setimagefile] = useState(null)
   const [imagefileuploadprocess, setimagefileuploadprocess] = useState(null)
   const [imagefileuploaderror, setimagefileuploaderror] = useState(null)
-  const [formdata, setformdata] = useState(null)
+  const [formdata, setformdata] = useState({})
+  const [publisherror, setpublisherror] = useState(null)
+  const navigate = useNavigate()
+// console.log(formdata)
+
+const handlesubmit = (e) =>{
+  e.preventDefault()
+  try {
+    
+    
+  
+  axios.post('/post/createpost',formdata)
+  .then(({data})=>{
+    // console.log(data)
+    setpublisherror(null)
+    navigate(`/post/${data.slug}`)
+
+  })
+  .catch((e)=>{
+    // console.log(e)
+    setpublisherror(e.response.data.message)
+  })  
+
+} catch (error) {
+  setpublisherror('something went worng')
+
+}
+}
 
 
 
@@ -26,7 +55,7 @@ export default function CreatePost() {
       const filename = new Date().getTime() + imagefile.name
       const storageref = ref(storage,filename)
       const uploadtask = uploadBytesResumable(storageref,imagefile)
-      console.log('storage:' + storage +"--filename:"+filename+"---storageref:"+ storageref +"---uploadtask:"+uploadtask)
+      // console.log('storage:' + storage +"--filename:"+filename+"---storageref:"+ storageref +"---uploadtask:"+uploadtask)
       uploadtask.on(
         'state_changed',
         (snapshot)=>{
@@ -57,11 +86,14 @@ export default function CreatePost() {
   return (
     <div className='p-3 max-w-3xl  mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>create a post</h1>
-      <form className='flex flex-col gap-4' action="">
+      <form onSubmit={handlesubmit} className='flex flex-col gap-4'>
               
                     <div className='flex flex-col gap-4 sm:flex-row justify-between'>
-                        <TextInput type='text' placeholder='Title required' required id='title' className='flex-1 font-bold'/>
-                        <Select className='font-semibold'>
+                        <TextInput type='text' placeholder='Title required' 
+                        onChange={(e)=>setformdata({...formdata,title:e.target.value})} 
+                        required id='title' 
+                        className='flex-1 font-bold'/>
+                        <Select onChange={(e)=>setformdata({...formdata,category:e.target.value})} className='font-semibold'>
                             <option value="Javascript">Select a category</option>
                             <option value="Ruby">Ruby</option>
                             <option value="GO">go</option>
@@ -77,12 +109,15 @@ export default function CreatePost() {
                       </div>
                     ) : 'Upload Image'}
                 </Button>
-                {imagefileuploaderror && <Alert color='failure'>
-                  {imagefileuploaderror}
-                  </Alert>}
+              
            </div>
-           <ReactQuill theme="snow" placeholder='Write Something...' className='w-full h-64 mb-12' required />
+
+                {imagefileuploaderror &&(<Alert color='failure'>{imagefileuploaderror}</Alert>)}
+                {formdata.image && (<img src={formdata.image} className='w-full h-72 object-cover'/>)}
+           
+           <ReactQuill onChange={(value)=>{setformdata({...formdata,content:value})}} theme="snow" placeholder='Write Something...' className='w-full h-64 mb-12' required />
            <Button type='submit'  gradientDuoTone="purpleToPink" className='text-2xl font-bold' outline>Publish</Button>
+           {publisherror && (<Alert color='failure' className='font-semibold mt-5' >{publisherror}</Alert>)}
       </form>
     </div>
   )
