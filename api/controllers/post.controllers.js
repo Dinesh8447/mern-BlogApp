@@ -101,8 +101,7 @@ export const updatepost = async(req,res,next)=>{
                 content:req.body.content,
                 category:req.body.category,
                 image:req.body.image
-            }
-        },{new:true})
+            }},{new:true})
         res.status(200).json(data)
     } catch (error) {
         next(error)

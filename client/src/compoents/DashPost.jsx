@@ -14,7 +14,7 @@ export default function DashPost() {
   const [showmodel, setshowmodel] = useState(false)
   const [postidtodelete, setpostidtodelete] = useState('')
 
-  console.log(userpost)
+  // console.log(userpost)
 
   const handledeletepost = async () => {
     setshowmodel(false)

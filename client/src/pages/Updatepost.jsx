@@ -16,8 +16,8 @@ export default function Updatepost() {
     const [publisherror, setpublisherror] = useState(null)
     const {id} = useParams()
     const navigate = useNavigate()
-  console.log(id)
-//   console.log(currentuser._id)
+  // console.log(id)
+  // console.log(currentuser._id)
 
 
   useEffect(()=>{
@@ -39,8 +39,8 @@ export default function Updatepost() {
   const handleupdate = (e) =>{
     e.preventDefault()
     try {
-    axios.put(`/post/updatepost/${formdata._id}/${currentuser._id}`,formdata)
-    .then(data=>{
+    axios.put(`/post/updatepost/${id}/${currentuser._id}`,formdata)
+    .then(({data})=>{
       console.log(data)
       setpublisherror(null)
       navigate(`/post/${data.slug}`)
