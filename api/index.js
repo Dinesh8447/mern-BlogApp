@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import userrouter from './routes/user.route.js'
 import authrouter from './routes/auth.route.js'
 import postrouter from './routes/post.route.js'
+import commentrouter from './routes/comment.route.js'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
@@ -25,6 +26,7 @@ app.use(cors({
 app.use('/api/user',userrouter)
 app.use('/api/auth',authrouter)
 app.use('/api/post',postrouter)
+app.use('/api/comment',commentrouter)
 
 
 app.use((err,req,res,next)=>{
