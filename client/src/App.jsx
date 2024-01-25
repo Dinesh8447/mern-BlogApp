@@ -8,12 +8,11 @@ import Signin from './pages/Signin'
 import Signup from './pages/Signup'
 import Header from './compoents/Header'
 import axios from 'axios'
-import Footer from './compoents/Footer'
 import PrivateRoute from './compoents/PrivateRoute'
 import CreatePost from './pages/CreatePost'
 import AdminPrivateRoute from './compoents/AdminPrivateRoute'
-import DashPost from './compoents/DashPost'
 import Updatepost from './pages/Updatepost'
+import PostPage from './pages/PostPage'
 
 axios.defaults.baseURL='http://localhost:4000/api'
 axios.defaults.withCredentials=true
@@ -27,6 +26,8 @@ function App() {
     <Route path='/projects' element={<Projects/>}/>
     <Route path='/signin' element={<Signin/>}/>
     <Route path='/signup' element={<Signup/>}/>
+    <Route path='/postpage/:postslug' element={<PostPage/>}/>
+    <Route path='/projects' element={<Projects/>}/>
     
     <Route element={<PrivateRoute/>}>
     <Route path='/dashboard' element={<Dashboard/>}/>
@@ -36,6 +37,8 @@ function App() {
     <Route path='/Createpost' element={<CreatePost/>}/>
     <Route path='/update-post/:id' element={<Updatepost/>}/>
     </Route>
+
+    
     </Route>
    </Routes>
   )

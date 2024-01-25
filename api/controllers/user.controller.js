@@ -85,7 +85,7 @@ export const getusers = async(req,res,next) =>{
     return next(errorhandler(403,'you are not allow to create post'))
   }
   try {
-    const startindex = parseInt(req.query.startindex) || 0
+    const startindex = parseInt({startindex:req.query.startindex}) || 0
     const limit = parseInt(req.query.limit) || 9 
     const sortdirection = req.query.sort === 'asc' ? 1 : -1
 
