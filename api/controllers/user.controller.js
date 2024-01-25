@@ -58,7 +58,7 @@ export const updateuser = async (req, res, next) => {
 }
 
 export const deleteuser = async(req,res,next) =>{
-  if (req.user.id !== req.params.userid) {
+  if (!req.user.isadmin && req.user.id !== req.params.userid) {
     return next(errorhandler(403, 'you are not allowed to update this user'))
   }
 
@@ -86,9 +86,10 @@ export const getusers = async(req,res,next) =>{
   }
   try {
     const startindex = parseInt(req.query.startindex) || 0
-    const limit = parseInt(req.query.limit)
+    const limit = parseInt(req.query.limit) || 9 
     const sortdirection = req.query.sort === 'asc' ? 1 : -1
 
+    
     const getuser = await usermodel.find()
       .sort({createdAt:sortdirection})
       .skip(startindex)
@@ -119,3 +120,6 @@ export const getusers = async(req,res,next) =>{
     next(error)   
   }
 }
+
+
+

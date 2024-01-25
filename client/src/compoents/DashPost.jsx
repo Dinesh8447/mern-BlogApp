@@ -60,6 +60,7 @@ export default function DashPost() {
       await axios.get(`/post/get?userid=${currentuser._id}&startindex=${startindex}`)
         .then(({ data }) => {
           if (data) {
+            
             setuserpost((prev) => [...prev, ...data.posts])
           }
           if (data.posts.length < 9) {
@@ -91,7 +92,7 @@ export default function DashPost() {
             </Table.Head>
             {
               userpost.map((post) => (
-                <Table.Body className='divide-y'>
+                <Table.Body key={post._id} className='divide-y'>
                   <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                     <Table.Cell>{new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
                     <Table.Cell><Link to={`/post/${post.slug}`}><img src={post.image} alt={post.title} className='w-20 h-10 object-cover bg-slate-500' /></Link></Table.Cell>
