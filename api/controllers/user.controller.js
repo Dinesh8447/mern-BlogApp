@@ -77,3 +77,45 @@ export const signout = async(req,res,next) =>{
     next(error)   
   }
 }
+
+
+export const getusers = async(req,res,next) =>{
+  
+  if(!req.user.isadmin){
+    return next(errorhandler(403,'you are not allow to create post'))
+  }
+  try {
+    const startindex = parseInt(req.query.startindex) || 0
+    const limit = parseInt(req.query.limit)
+    const sortdirection = req.query.sort === 'asc' ? 1 : -1
+
+    const getuser = await usermodel.find()
+      .sort({createdAt:sortdirection})
+      .skip(startindex)
+      .limit(limit)
+      
+      const userwithoutpass = getuser.map((user)=>{
+        const {password,...rest} =user._doc
+        return rest
+      })
+
+      const totaluser = await usermodel.countDocuments()
+      const now = new Date()
+      const onemonthago = new Date(
+        now.getFullYear(),
+        now.getMonth() - 1,
+        now.getDate()
+      )
+    const lastmonthuser = await usermodel.countDocuments({
+      createdAt:{$gte : onemonthago}
+    })
+
+    res.status(200).json({
+      users:userwithoutpass,
+      totaluser,
+      lastmonthuser
+    })
+  } catch (error) {
+    next(error)   
+  }
+}
