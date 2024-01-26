@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Alert, Button, Textarea } from 'flowbite-react'
 import Comment from './Comment'
@@ -10,7 +10,9 @@ export default function CommentSection({ postid }) {
     const [comment, setcomment] = useState('')
     const [commenterror, setcommenterror] = useState(null)
     const [comments, setcomments] = useState([])
-    // console.log(comments)
+    const navigate = useNavigate()
+   
+    console.log(comments)
 
     useEffect(() => {
         try {
@@ -25,9 +27,7 @@ export default function CommentSection({ postid }) {
         } catch (error) {
             console.log(error)
         }
-    }, [])
-
-
+    }, [postid])
 
 
     const handlesubmit = (e) => {
@@ -47,6 +47,33 @@ export default function CommentSection({ postid }) {
         }
 
     }
+
+    const handlelike = async(commentid)=>{
+        try {
+            if(!currentuser){
+                navigate('/signin')
+                return
+            }
+            axios.put(`/comment/likecomment/${commentid}`)
+            .then(({data})=>{
+                // console.log(data._id === commentid)
+                // console.log({...comment,likes:data.likes})
+                setcomments(comments.map((comment)=>
+                    data._id === commentid ? {
+                        ...comment,
+                        likes:data.likes,
+                        numberoflikes:data.numberoflikes
+                    } : comment
+                ))
+            })
+            .catch(e=>console.log(e))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
     return (
         <div className='p-3 max-w-2xl mx-auto w-full'>
             {
@@ -106,7 +133,7 @@ export default function CommentSection({ postid }) {
                         </div>
                     </div>
                     {comments.map((comments)=>(
-                        <Comment key={comments._id} comments={comments}/>
+                        <Comment key={comments._id}  comments={comments} handlelike={handlelike}/>
                     ))}
                     </>
 

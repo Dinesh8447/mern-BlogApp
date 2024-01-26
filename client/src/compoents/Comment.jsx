@@ -1,12 +1,12 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
+import {FaThumbsUp} from 'react-icons/fa'
+import { useSelector } from 'react-redux'
 
-export default function Comment({ key, comments }) {
-
+export default function Comment({comments,handlelike }) {
+    const { currentuser } = useSelector(state => state.user)
     const [ user,setuser] = useState({})
-
-    
 
     useEffect(() => {
         const fetchuserforcomments = async () => {
@@ -23,8 +23,12 @@ export default function Comment({ key, comments }) {
 
         fetchuserforcomments()
     }, [comments])
+
+
+
+
     return (
-        <div className='flex gap-2 items-center border-b dark:border-gray-600 text-sm'>
+        <div className='flex  gap-2 items-center border-b dark:border-gray-600 text-sm'>
             <div className='flex-shrink-0 mr-3'>
                 <img className='w-10 h-10 rounded-full' src={user.photourl} alt={user.username}  />
             </div>
@@ -36,7 +40,17 @@ export default function Comment({ key, comments }) {
                 </div>
                 <p className='text-gray-500 pb-2'>{comments.content}</p>
             </div>
-
+            <div className="flex gap-2 items-center border-t dark:border-gray-700 max-w-fit">
+                <button type='button' onClick={()=>handlelike(comments._id)}
+                 className={`text-gray-400 hover:text-blue-500 ${currentuser && comments.likes.includes(currentuser._id) && '!text-blue-500'}`} >
+                    <FaThumbsUp className='text-sm'/>                    
+                </button>
+                <p className='text-sm font-semibold'>
+                    {
+                        comments.numberoflikes > 0 && comments.numberoflikes + " " + (comments.numberoflikes === 1 ? 'Like' : 'Likes')
+                    }
+                </p>
+            </div>
         </div>
     )
 }
