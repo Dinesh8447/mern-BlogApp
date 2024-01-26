@@ -50,17 +50,20 @@ export default function Comment({ comments, handlelike,handleeditcomment,Handled
 
 
     return (
-        <div className='flex  gap-2 items-center border-b dark:border-gray-600 text-sm'>
-            <div className='flex-shrink-0 mr-3'>
+        // first
+        <div className='flex p-4   border-b dark:border-gray-600 text-sm'> 
+            <div className='flex-shrink-0 mr-5'>
                 <img className='w-10 h-10 rounded-full' src={user.photourl} alt={user.username} />
             </div>
 
-            <div className="flex-1">
-                <div className="flex items-center mb-1">
+
+            <div className="flex-1 ">
+                <div className="flex items-center mb-3">
                     <span className='font-bold mr-1 text-sm truncate'>{user ? `@${user.username}` : 'anonymous user'}</span>
                     <span className='text-gray-500 text-sm'>{moment(comments.createdAt).fromNow()}</span>
                 </div>
-            </div>
+
+
             {isediting ? (
                 <>
             <Textarea 
@@ -79,12 +82,12 @@ export default function Comment({ comments, handlelike,handleeditcomment,Handled
                 <>
                     <p className='text-gray-500 pb-2'>{comments.content}</p>
 
-                    <div className="flex gap-2 items-center border-t dark:border-gray-700 max-w-fit">
+                    <div className="flex gap-2 items-center  border-t dark:border-gray-700 max-w-fit">
                         <button type='button' onClick={() => handlelike(comments._id)}
-                            className={`text-gray-400 hover:text-blue-500 ${currentuser && comments.likes.includes(currentuser._id) && '!text-blue-500'}`} >
+                            className={`text-gray-400 hover:text-blue-500 mt-2 ${currentuser && comments.likes.includes(currentuser._id) && '!text-blue-500'}`} >
                             <FaThumbsUp className='text-sm' />
                         </button>
-                        <p className='text-sm font-semibold'>
+                        <p className='text-sm mt-2 font-semibold'>
                             {
                                 comments.numberoflikes > 0 && comments.numberoflikes + " " + (comments.numberoflikes === 1 ? 'Like' : 'Likes')
                             }
@@ -92,8 +95,8 @@ export default function Comment({ comments, handlelike,handleeditcomment,Handled
                         {
                             currentuser && (currentuser._id === comments.userid || currentuser.isadmin) && (
                                 <>
-                                <button type='button' className='text-gray-400 hover:text-green-500' onClick={HandleEdit}>Edit</button>
-                                <button type='button' className='text-gray-400 hover:text-red-500' onClick={()=>Handledelete(comments._id)}>Delete</button>
+                                <button type='button' className='text-gray-400 mt-2 font-semibold hover:text-green-500' onClick={HandleEdit}>Edit</button>
+                                <button type='button' className='text-gray-400 mt-2 font-semibold hover:text-red-500' onClick={()=>Handledelete(comments._id)}>Delete</button>
                                 </>
                             )
                         }
@@ -101,8 +104,9 @@ export default function Comment({ comments, handlelike,handleeditcomment,Handled
                     </div>
                 </>
 
-            )}
-
+            )
+            }
+</div>
         </div>
     )
 }

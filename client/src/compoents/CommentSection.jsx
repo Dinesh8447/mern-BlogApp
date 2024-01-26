@@ -92,7 +92,6 @@ export default function CommentSection({ postid }) {
                     setshowmodel(false)
                    setcomments(comments.filter((c)=>c._id !== commentid))
                     
-                    console.log('delete')
                 })
                 .catch((e) => console.log(e))
         } catch (error) {
