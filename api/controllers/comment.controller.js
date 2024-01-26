@@ -59,3 +59,34 @@ export const likecomment = async(req,res,next) =>{
 }
 
 
+
+export const editcomment = async(req,res,next) =>{
+    try {
+        // check the user auth or not
+        const commentedit = await commentdb.findById(req.params.commentid)
+        if(!commentedit){
+            return next(errorhandler(403,'cannot not found'))
+        }
+
+        if(commentedit.userid !== req.user.id && !req.user.isadmin ){
+            return next(errorhandler(403,'your are not allow to edit this comment'))
+        }
+
+        //and then access to update the comment
+        const editedcomment = await commentdb.findByIdAndUpdate(req.params.commentid,{
+            content:req.body.content
+        },
+        {new:true}
+        )
+
+        
+        await editedcomment.save()
+
+        res.status(200).json(editedcomment)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
