@@ -65,7 +65,7 @@ export const editcomment = async(req,res,next) =>{
         // check the user auth or not
         const commentedit = await commentdb.findById(req.params.commentid)
         if(!commentedit){
-            return next(errorhandler(403,'cannot not found'))
+            return next(errorhandler(403,'comment not found'))
         }
 
         if(commentedit.userid !== req.user.id && !req.user.isadmin ){
@@ -90,3 +90,21 @@ export const editcomment = async(req,res,next) =>{
 }
 
 
+export const deletecomment = async(req,res,next) =>{
+    try {
+        // check the user auth or not
+        const comment = await commentdb.findById(req.params.commentid)
+        if(!comment){
+            return next(errorhandler(403,'comment not found'))
+        }
+        if(comment.userid !== req.user.id && !req.user.isadmin ){
+            return next(errorhandler(403,'your are not allow to edit this comment'))
+        }
+
+       await commentdb.findByIdAndDelete(req.params.commentid)
+        res.status(200).json("comment has been deleted")
+
+    } catch (error) {
+        next(error)
+    }
+}

@@ -5,7 +5,7 @@ import { FaThumbsUp } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { Button, Textarea } from 'flowbite-react'
 
-export default function Comment({ comments, handlelike,handleeditcomment }) {
+export default function Comment({ comments, handlelike,handleeditcomment,Handledelete}) {
     const { currentuser } = useSelector(state => state.user)
     const [user, setuser] = useState({})
     const [isediting, setisediting] = useState(false)
@@ -31,6 +31,8 @@ export default function Comment({ comments, handlelike,handleeditcomment }) {
         setisediting(true)
         seteditedcontent(comments.content)
     }
+
+
 
     const handlesave = async()=>{
         try {
@@ -89,12 +91,10 @@ export default function Comment({ comments, handlelike,handleeditcomment }) {
                         </p>
                         {
                             currentuser && (currentuser._id === comments.userid || currentuser.isadmin) && (
-                                <button
-                                    type='button'
-                                    onClick={HandleEdit}
-                                >
-                                    edit
-                                </button>
+                                <>
+                                <button type='button' className='text-gray-400 hover:text-green-500' onClick={HandleEdit}>Edit</button>
+                                <button type='button' className='text-gray-400 hover:text-red-500' onClick={()=>Handledelete(comments._id)}>Delete</button>
+                                </>
                             )
                         }
 
