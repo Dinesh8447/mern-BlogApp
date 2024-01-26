@@ -12,9 +12,20 @@ export const createcomment = async(req,res,next) =>{
             userid,
             postid
         })
-
         await newcomment.save()
         res.status(200).json(newcomment)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getpostcomment = async(req,res,next) =>{
+    // console.log(req.params)
+    try {
+        const comments = await commentdb.find({userid:req.params.postid})
+        .sort({createdAt:-1,})
+        res.status(200).json(comments)
+
     } catch (error) {
         next(error)
     }

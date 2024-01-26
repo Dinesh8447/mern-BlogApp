@@ -1,6 +1,7 @@
 import { errorhandler } from "../utils/error.js"
 import bycrypt from 'bcryptjs'
 import usermodel from '../models/user.model.js'
+// import user from "../models/user.model.js"
 
 export const updateuser = async (req, res, next) => {
 
@@ -123,3 +124,22 @@ export const getusers = async(req,res,next) =>{
 
 
 
+export const getusersforcomments = async(req,res,next) =>{
+
+
+
+try {
+    const user = await usermodel.findById(req.params.userid)
+
+    if(!user){
+    return next(errorhandler(404,'user not found'))
+    }
+
+    const {password,...rest} = user._doc
+    res.status(200).json(rest)
+  
+} catch (error) {
+  next(error)
+}
+
+}
