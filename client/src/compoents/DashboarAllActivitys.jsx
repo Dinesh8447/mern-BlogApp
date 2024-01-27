@@ -68,7 +68,7 @@ export default function DashboarAllActivitys() {
 
     return (
         <div className='p-3 md:mx-auto'>
-            {/* 1 */}
+{/* 1 */}
             {/* top box container */}
             <div className=" lg:flex  justify-center gap-4">
                 {/* user top box */}
@@ -216,11 +216,9 @@ export default function DashboarAllActivitys() {
                                     </Table.Cell>
                                     <Table.Cell className='w-96'><p>{post.title}</p></Table.Cell>
                                     <Table.Cell className='w-5'><p>{post.category}</p></Table.Cell>
-
                                 </Table.Row>
                             </Table.Body>
                         ))}
-
                     </Table>
                 </div>
 
