@@ -28,7 +28,7 @@ const handlesubmit = (e) =>{
   .then(({data})=>{
     // console.log(data)
     setpublisherror(null)
-    navigate(`/post/${data.slug}`)
+    navigate(`/postpage/${data.slug}`)
 
   })
   .catch((e)=>{

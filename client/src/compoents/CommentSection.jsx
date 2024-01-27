@@ -15,7 +15,7 @@ export default function CommentSection({ postid }) {
     const [commenttodelete, setcommenttodelete] = useState(null)
     const navigate = useNavigate()
 
-    console.log(comments)
+    // console.log(comments)
 
     useEffect(() => {
         try {

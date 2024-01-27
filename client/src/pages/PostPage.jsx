@@ -4,19 +4,22 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import CallToAction from '../compoents/CallToAction'
 import CommentSection from '../compoents/CommentSection'
+import PostCard from './PostCard'
 
 export default function PostPage() {
 const{postslug} =useParams()
 const [loading,setloading] = useState(false)
 const [error,seterror] = useState(false)
 const [post,setpost] = useState(null)
+const [recentpost,setrecentpost] = useState(null)
 
-// console.log(post)
+// console.log(recentpost)
+
 
 useEffect(()=>{
-
-    const fetchpost = async() =>{
-        try {
+  
+  const fetchpost = async() =>{
+    try {
             setloading(true)
             axios.get(`/post/get?slug=${postslug}`)
             .then(({data})=>{
@@ -36,6 +39,35 @@ useEffect(()=>{
     fetchpost()
     
 },[postslug])
+
+useEffect(()=>{
+
+  const fetchrecentpost = async() =>{
+      try {
+          setloading(true)
+          axios.get('/post/get?limit=3')
+          .then(({data})=>{
+              setrecentpost(data.posts)
+              // console.log(data.posts)
+              setloading(false)
+              seterror(false)
+          })
+          .catch(e=>{
+              seterror(e)
+          })
+      } catch (error) {
+        seterror(true)
+        setloading(false)
+      }
+    }
+    
+    fetchrecentpost()
+    
+  },[])
+  
+  
+
+
 
 if(loading) return (
     <div className='flex justify-center items-center min-h-screen'>
@@ -63,6 +95,16 @@ if(loading) return (
         <CallToAction/>
       </div>
       <CommentSection postid={post && post._id}/>
+      <div className="flex flex-col justify-center items-center mb-5">
+        <h1 className='text-xl mb-5'>Recent articles</h1>
+        <div className="flex flex-wrap gap-5 mt-5 justify-center">
+                  {
+                    recentpost && recentpost.map((post)=>(
+                      <PostCard key={post._id} post={post}/>
+                    ))
+                  }
+        </div>
+      </div>
     </main>
   )
 }
