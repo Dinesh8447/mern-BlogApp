@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { signoutsuccess } from '../../redux/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
-// import user from '../../../api/models/post.model'
+import { FaRegComments } from "react-icons/fa";
 
 export default function Dashsidebar() {
   const location = useLocation()
@@ -43,18 +43,23 @@ export default function Dashsidebar() {
             </Sidebar.Item>
           </Link>
 
-          {currentuser.isadmin && (
-
-            <>
               <Link to='/dashboard?tab=post'>
                 <Sidebar.Item className="font-semibold cursor-pointer" active={tab === 'post'} icon={HiDocumentText} as='div' >
                   Posts
                 </Sidebar.Item>
               </Link>
-
+              
+          {currentuser.isadmin && (
+            <>
               <Link to='/dashboard?tab=user'>
                 <Sidebar.Item className="font-semibold cursor-pointer" active={tab === 'user'} icon={HiOutlineUserGroup} as='div' >
                   Users
+                </Sidebar.Item>
+              </Link>
+
+              <Link to='/dashboard?tab=comments'>
+                <Sidebar.Item className="font-semibold cursor-pointer" active={tab === 'comments'} icon={FaRegComments} as='div' >
+                  Comments
                 </Sidebar.Item>
               </Link>
             </>

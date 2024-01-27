@@ -32,6 +32,41 @@ export const getpostcomment = async(req,res,next) =>{
 }
 
 
+export const getcomments = async(req,res,next) =>{
+    if(!req.user.isadmin) return next(errorhandler(403,'you are not allow to get all comment'))
+    
+    try {
+        const startindex = parseInt(req.query.startindex) || 0
+        const limit = parseInt(req.query.limit) || 8
+        const sortdirection = req.query.sort === 'desc' ? -1 : 1;
+
+        const comments = await commentdb.find()
+        .limit(limit)
+        .skip(startindex)
+        .sort({createdAt:sortdirection})
+
+        const totalcomments = await commentdb.countDocuments()
+        const now = new Date()
+        const onemonthago = new Date(
+            now.getFullYear(),
+            now.getMonth() - 1,
+            now.getDate()
+        )
+        const  lastmonthcomments = await commentdb.countDocuments({createdAt:{$gte:onemonthago}})
+        res.status(200).json({
+            comments,
+            totalcomments,
+            lastmonthcomments
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+
+
 
 export const likecomment = async(req,res,next) =>{
     try {
