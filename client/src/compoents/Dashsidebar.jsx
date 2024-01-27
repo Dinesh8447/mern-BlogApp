@@ -5,7 +5,8 @@ import { Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { signoutsuccess } from '../../redux/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { FaRegComments } from "react-icons/fa";
+import { FaRegChartBar, FaRegComments } from "react-icons/fa";
+
 
 export default function Dashsidebar() {
   const location = useLocation()
@@ -37,20 +38,31 @@ export default function Dashsidebar() {
     <Sidebar className='w-full md:w-56 font-semibold'>
       <Sidebar.Items>
         <Sidebar.ItemGroup className='flex flex-col gap-2'>
+
+{currentuser && currentuser.isadmin && (
+    <Link to='/dashboard?tab=dashboardactivity'>
+    <Sidebar.Item className="font-semibold cursor-pointer" active={tab === 'dashboardactivity'} icon={FaRegChartBar} as='div' >
+      Dashboard
+    </Sidebar.Item>
+  </Link>
+)}
+
           <Link to={'/dashboard?tab=profile'}>
             <Sidebar.Item className="cursor-pointer font-semibold" active={tab === 'profile'} icon={HiUser} label={currentuser.isadmin ? 'Admin' : 'User'} as='div' labelColor="dark">
               Profile
             </Sidebar.Item>
           </Link>
 
-              <Link to='/dashboard?tab=post'>
-                <Sidebar.Item className="font-semibold cursor-pointer" active={tab === 'post'} icon={HiDocumentText} as='div' >
-                  Posts
-                </Sidebar.Item>
-              </Link>
-              
+          <Link to='/dashboard?tab=post'>
+            <Sidebar.Item className="font-semibold cursor-pointer" active={tab === 'post'} icon={HiDocumentText} as='div' >
+              Posts
+            </Sidebar.Item>
+          </Link>
+
           {currentuser.isadmin && (
             <>
+           
+              
               <Link to='/dashboard?tab=user'>
                 <Sidebar.Item className="font-semibold cursor-pointer" active={tab === 'user'} icon={HiOutlineUserGroup} as='div' >
                   Users
@@ -62,6 +74,7 @@ export default function Dashsidebar() {
                   Comments
                 </Sidebar.Item>
               </Link>
+             
             </>
 
           )}

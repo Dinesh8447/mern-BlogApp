@@ -5,6 +5,7 @@ import DashProfile from '../compoents/DashProfile'
 import DashPost from '../compoents/DashPost'
 import Dashuser from '../compoents/Dashuser'
 import DashComments from '../compoents/DashComments'
+import DashboarAllActivitys from '../compoents/DashboarAllActivitys'
 
 export default function Dashboard() {
 const location = useLocation()
@@ -30,6 +31,7 @@ useEffect(()=>{
       {tab === 'post' && <DashPost/> }
       {tab === 'user' && <Dashuser/> }
       {tab === 'comments' && <DashComments/> }
+      {tab === 'dashboardactivity' && <DashboarAllActivitys/> }
     </div>
   )
 }
