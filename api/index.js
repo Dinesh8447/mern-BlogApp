@@ -9,9 +9,19 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import path from 'path'
-
-
 const app = express()
+
+// const dirname = path.resolve()
+
+app.use(express.static(path.join(__dirname, '/client/dist')))
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+})
+
+
+
+
 
 
 dotenv.config();
@@ -52,13 +62,7 @@ mongoose.connect(process.env.MONGODB)
     .then(() => console.log('connect'))
     .catch(e => console.log(e))
 
-const dirname = path.resolve()
 
-app.use(express.static(path.join(dirname, '/client/dist')))
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(dirname, 'client', 'dist', 'index.html'))
-})
 
 
 
