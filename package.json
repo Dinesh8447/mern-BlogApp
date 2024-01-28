@@ -4,9 +4,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node api/index.js",
+    "dev": "nodemone api/index.js",
     "start": "node api/index.js",
-    "build": "npm install --legacy-peer-deps && npm install --legacy-peer-deps  --prefix client && npm run build --prefix client"
+    "build": "npm install  && npm install  --prefix client && npm run build --prefix client"
   },
   "author": "",
   "license": "ISC",
