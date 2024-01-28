@@ -1,5 +1,5 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaMoon, FaSun } from 'react-icons/fa'
 import Footers from './Footer'
@@ -7,14 +7,41 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toggletheme } from '../../redux/theme/themeslice'
 import axios from 'axios'
 import { signoutsuccess } from '../../redux/user/userSlice'
+import { useEffect, useState } from 'react'
 
 
 export default function Header() {
   const path = useLocation().pathname
+  const location = useLocation()
   const { currentuser } = useSelector(state => state.user)
   const { theme } = useSelector(state => state.theme)
   const dispatch = useDispatch()
   // console.log(currentuser)
+  const [searchterms,setsearchterms] =useState('')
+  // console.log(searchterms)
+  const navigate = useNavigate()
+
+useEffect(()=>{
+const urlparams = new URLSearchParams(location.search)
+const searchtermformurl = urlparams.get('searchterms')
+if(searchtermformurl){
+  setsearchterms(searchtermformurl)
+}
+
+
+},[location.search])
+
+
+const handlesubmit = (e) =>{
+      e.preventDefault()
+      const urlparms = new URLSearchParams(location.search)
+      urlparms.set('searchterms',searchterms)
+      const searchquery = urlparms.toString();
+      navigate(`search?${searchquery}`)
+}
+
+
+
 
   const handlesignout = () =>{
     try {
@@ -35,18 +62,20 @@ export default function Header() {
         </Link>
 
         {/* form */}
-        <form action="">
+        <form onSubmit={handlesubmit}>
           <TextInput
             type='text'
             placeholder='Search...'
             rightIcon={AiOutlineSearch}
             className='hidden lg:inline'
+            onChange={(e)=>setsearchterms(e.target.value)}
+            value={searchterms}
           />
-        </form>
 
-        <Button className='w-12 h-10 lg:hidden' color='gray' pill>
+        <Button  className='w-12 h-10 cursor-pointer lg:hidden' color='gray' pill>
           <AiOutlineSearch />
         </Button>
+        </form>
 
         <div className='flex items-center gap-2 md:order-2'>
           <Button className='w-12 h-10 hidden sm:inline' color='gray' pill onClick={() => dispatch(toggletheme())}>

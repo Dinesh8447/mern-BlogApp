@@ -13,6 +13,7 @@ import CreatePost from './pages/CreatePost'
 import AdminPrivateRoute from './compoents/AdminPrivateRoute'
 import Updatepost from './pages/Updatepost'
 import PostPage from './pages/PostPage'
+import Search from './compoents/Search'
 
 axios.defaults.baseURL='http://localhost:4000/api'
 axios.defaults.withCredentials=true
@@ -28,6 +29,7 @@ function App() {
     <Route path='/signup' element={<Signup/>}/>
     <Route path='/postpage/:postslug' element={<PostPage/>}/>
     <Route path='/projects' element={<Projects/>}/>
+    <Route path='/search' element={<Search/>}/>
     
     <Route element={<PrivateRoute/>}>
     <Route path='/dashboard' element={<Dashboard/>}/>
