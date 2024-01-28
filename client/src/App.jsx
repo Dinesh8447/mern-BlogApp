@@ -15,7 +15,8 @@ import Updatepost from './pages/Updatepost'
 import PostPage from './pages/PostPage'
 import Search from './compoents/Search'
 
-axios.defaults.baseURL='http://localhost:4000/api'
+// axios.defaults.baseURL='http://localhost:4000/api'
+axios.defaults.baseURL='https://mern-blog-app-chi.vercel.app/api'
 axios.defaults.withCredentials=true
 
 function App() {  
