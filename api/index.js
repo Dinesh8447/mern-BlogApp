@@ -10,7 +10,6 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import path from 'path'
 
-const dirname = path.resolve()
 
 const app = express()
 
@@ -24,12 +23,8 @@ app.use(cors({
     origin: ['http://localhost:5173'],
     credentials: true
 }))
-app.use(express.static(path.join(dirname, '/client/dist')))
 
-// console.log(path.join(dirname, '/client/dist'))
-app.get('*', (req, res) => {
-    res.sendFile(path.join(dirname, 'client', 'dist', 'index.html'))
-})
+
 
 app.use('/api/user', userrouter)
 app.use('/api/auth', authrouter)
@@ -57,6 +52,13 @@ mongoose.connect(process.env.MONGODB)
     .then(() => console.log('connect'))
     .catch(e => console.log(e))
 
+const dirname = path.resolve()
+
+app.use(express.static(path.join(dirname, '/client/dist')))
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(dirname, 'client', 'dist', 'index.html'))
+})
 
 
 
