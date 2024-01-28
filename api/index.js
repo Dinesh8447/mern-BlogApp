@@ -10,7 +10,8 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import path from 'path'
 
-const __dirname = path.resolve()
+const dirname = path.resolve()
+
 const app = express()
 
 
@@ -23,17 +24,18 @@ app.use(cors({
     origin: ['http://localhost:5173'],
     credentials: true
 }))
+app.use(express.static(path.join(dirname, '/client/dist')))
 
+// console.log(path.join(dirname, '/client/dist'))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(dirname, 'client', 'dist', 'index.html'))
+})
 
 app.use('/api/user', userrouter)
 app.use('/api/auth', authrouter)
 app.use('/api/post', postrouter)
 app.use('/api/comment', commentrouter)
 
-app.use(express.static(path.join(__dirname, '/client/dist')))
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-})
 
 app.use((err, req, res, next) => {
     const statuscode = err.statuscode || 500
