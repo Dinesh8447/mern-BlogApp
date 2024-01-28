@@ -28,7 +28,7 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 // app.use(express.json())
 app.use(cors({
-    origin: ['http://localhost:5173','https://mern-blog-app-suqy.vercel.app'],
+    origin: ['http://localhost:5173'],
     credentials: true
 }))
 
